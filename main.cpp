@@ -364,7 +364,7 @@ int main()
                         ry=atoi(report_y.c_str());
                         rx=rx-1;
                         ry=ry-1;
-                        if (rx>=0&&ry>=0&&rx<=20&&ry<=20&&wuziqipan[rx][ry]=="*")
+                        if (rx>=0&&ry>=0&&rx<20&&ry<20&&wuziqipan[rx][ry]=="*")
                         {
                             stringstream r;
                             r<<rx;
@@ -386,103 +386,7 @@ int main()
                     else if(nowqizi=="*")
                     {
                         cout<<"The other side initiates the defeat judgment";
-                        cout<<"Checking";
-                        x=1;
-                        y=1;
-                        while (x<=21&&winner==0)
-                        {
-                            cout<<endl;
-                            while(y<=21&&winner==0) {
-                                //@
-                                if (wuziqipan[x][y]=="@"&&wuziqipan[x+1][y]=="@"&&wuziqipan[x+2][y]=="@"&&wuziqipan[x+3][y]=="@"&&wuziqipan[x+4][y]=="@"){
-                                    //gaming=0;
-                                    winner=1;
-                                }
-                                else if (wuziqipan[x][y]=="@"&&wuziqipan[x-1][y]=="@"&&wuziqipan[x-2][y]=="@"&&wuziqipan[x-3][y]=="@"&&wuziqipan[x-4][y]=="@"){
-                                    //gaming=0;
-                                    winner=1;
-                                }
-                                else if (wuziqipan[x][y+1]=="@"&&wuziqipan[x][y+2]=="@"&&wuziqipan[x][y+3]=="@"&&wuziqipan[x][y+4]=="@"&&wuziqipan[x][y]=="@"){
-                                    //gaming=0;
-                                    winner=1;
-                                }
-                                else if (wuziqipan[x][y-1]=="@"&&wuziqipan[x][y-2]=="@"&&wuziqipan[x][y-3]=="@"&&wuziqipan[x][y-4]=="@"&&wuziqipan[x][y]=="@"){
-                                    //gaming=0;
-                                    winner=1;
-                                }
-                                else if (wuziqipan[x+1][y+1]=="@"&&wuziqipan[x+2][y+2]=="@"&&wuziqipan[x+3][y+3]=="@"&&wuziqipan[x+4][y+4]=="@"&&wuziqipan[x][y]=="@"){
-                                    //gaming=0;
-                                    winner=1;
-                                }
-                                else if (wuziqipan[x-1][y-1]=="@"&&wuziqipan[x-2][y-2]=="@"&&wuziqipan[x-3][y-3]=="@"&&wuziqipan[x-4][y-4]=="@"&&wuziqipan[x][y]=="@"){
-                                    //gaming=0;
-                                    winner=1;
-                                }
-                                //#
-                                if (wuziqipan[x][y]=="#"&&wuziqipan[x+1][y]=="#"&&wuziqipan[x+2][y]=="#"&&wuziqipan[x+3][y]=="#"&&wuziqipan[x+4][y]=="#"){
-                                    //gaming=0;
-                                    winner=2;
-                                }
-                                else if (wuziqipan[x][y]=="#"&&wuziqipan[x-1][y]=="#"&&wuziqipan[x-2][y]=="#"&&wuziqipan[x-3][y]=="#"&&wuziqipan[x-4][y]=="#"){
-                                    //gaming=0;
-                                    winner=2;
-                                }
-                                else if (wuziqipan[x][y+1]=="#"&&wuziqipan[x][y+2]=="#"&&wuziqipan[x][y+3]=="#"&&wuziqipan[x][y+4]=="#"&&wuziqipan[x][y]=="#"){
-                                    //gaming=0;
-                                    winner=2;
-                                }
-                                else if (wuziqipan[x][y-1]=="#"&&wuziqipan[x][y-2]=="#"&&wuziqipan[x][y-3]=="#"&&wuziqipan[x][y-4]=="#"&&wuziqipan[x][y]=="#"){
-                                    //gaming=0;
-                                    winner=2;
-                                }
-                                else if (wuziqipan[x+1][y+1]=="#"&&wuziqipan[x+2][y+2]=="#"&&wuziqipan[x+3][y+3]=="#"&&wuziqipan[x+4][y+4]=="#"&&wuziqipan[x][y]=="#"){
-                                    //gaming=0;
-                                    winner=2;
-                                }
-                                else if (wuziqipan[x-1][y-1]=="#"&&wuziqipan[x-2][y-2]=="#"&&wuziqipan[x-3][y-3]=="#"&&wuziqipan[x-4][y-4]=="#"&&wuziqipan[x][y]=="#"){
-                                    //gaming=0;
-                                    winner=2;
-                                }
-                                if (winner!=0)
-                                {
-                                    stringstream winnerits;
-                                    winnerits<<winner;
-                                    winnerits>>winners;
-                                    gamecofeelback=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/winner&id="+winners+"'",".PokeGamingChannel");
-                                    gaming=atoi(gamecofeelback.c_str());
-                                    wait="END";
-                                }
-                                y++;
-                            }
-                            cout <<"."<<endl;
-                            y=-1;
-                            x=x+1;
-                        }
-
-                    }
-                    else
-                    {
-                        cout<<"\nWaiting..";
-                        cout<<endl;
-                        while(nowqizi!=qizi)
-                        {
-                            nowqizi=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/nowwho&x="+report_x+"&y="+report_y+"'",".PokeGamingChannel");
-                            sleep(0.25);
-                        }
-                        re=1;
-                    }
-                    if (re==1)
-                    {
-                        cout <<endl;
-                        cout <<"\033[1;34mRefresh";
-                        nowqizi=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/nowwho&x="+report_x+"&y="+report_y+"'",".PokeGamingChannel");
-                        qiziUDx=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/panupdatex'",".PokeGamingChannel");
-                        qiziUDy=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/panupdatey'",".PokeGamingChannel");
-                        cout <<".";
-                        UDqiziX=atoi(qiziUDx.c_str());
-                        UDqiziY=atoi(qiziUDy.c_str());
-                        wuziqipan[UDqiziX][UDqiziY]=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/pan&x="+qiziUDx+"&y="+qiziUDy+"'",".PokeGamingChannel");
-                        cout <<".";
+                        cout<<"\nChecking";
                         x=1;
                         y=1;
                         while (x<=21&&winner==0)
@@ -514,6 +418,14 @@ int main()
                                     //gaming=0;
                                     winner=1;
                                 }
+                                else if (wuziqipan[x-1][y+1]=="@"&&wuziqipan[x-2][y+2]=="@"&&wuziqipan[x-3][y+3]=="@"&&wuziqipan[x-4][y+4]=="@"&&wuziqipan[x][y]=="@"){
+                                    //gaming=0;
+                                    winner=1;
+                                }
+                                else if (wuziqipan[x+1][y-1]=="@"&&wuziqipan[x+2][y-2]=="@"&&wuziqipan[x+3][y-3]=="@"&&wuziqipan[x+4][y-4]=="@"&&wuziqipan[x][y]=="@"){
+                                    //gaming=0;
+                                    winner=1;
+                                }
                                 //#
                                 if (wuziqipan[x][y]=="#"&&wuziqipan[x+1][y]=="#"&&wuziqipan[x+2][y]=="#"&&wuziqipan[x+3][y]=="#"&&wuziqipan[x+4][y]=="#"){
                                     //gaming=0;
@@ -536,6 +448,132 @@ int main()
                                     winner=2;
                                 }
                                 else if (wuziqipan[x-1][y-1]=="#"&&wuziqipan[x-2][y-2]=="#"&&wuziqipan[x-3][y-3]=="#"&&wuziqipan[x-4][y-4]=="#"&&wuziqipan[x][y]=="#"){
+                                    //gaming=0;
+                                    winner=2;
+                                }
+                                else if (wuziqipan[x-1][y+1]=="#"&&wuziqipan[x-2][y+2]=="#"&&wuziqipan[x-3][y+3]=="#"&&wuziqipan[x-4][y+4]=="#"&&wuziqipan[x][y]=="#"){
+                                    //gaming=0;
+                                    winner=2;
+                                }
+                                else if (wuziqipan[x+1][y-1]=="#"&&wuziqipan[x+2][y-2]=="#"&&wuziqipan[x+3][y-3]=="#"&&wuziqipan[x+4][y-4]=="#"&&wuziqipan[x][y]=="#"){
+                                    //gaming=0;
+                                    winner=2;
+                                }
+                                if (winner!=0)
+                                {
+                                    stringstream winnerits;
+                                    winnerits<<winner;
+                                    winnerits>>winners;
+                                    gamecofeelback=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/winner&id="+winners+"'",".PokeGamingChannel");
+                                    gaming=atoi(gamecofeelback.c_str());
+                                    wait="END";
+                                }
+                                else
+                                {
+                                    gamecofeelback=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/winner&id=0'",".PokeGamingChannel");
+                                    gaming=atoi(gamecofeelback.c_str());
+                                }
+
+                                y++;
+                            }
+                            cout <<"."<<endl;
+                            y=-1;
+                            x=x+1;
+                        }
+
+                    }
+                    else
+                    {
+                        cout<<"\nWaiting..";
+                        cout<<endl;
+                        while(nowqizi!=qizi)
+                        {
+                            nowqizi=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/nowwho&x="+report_x+"&y="+report_y+"'",".PokeGamingChannel");
+                            sleep(0.25);
+                        }
+                        re=1;
+                    }
+                    if (re==1)
+                    {
+                        cout <<"\033[1;34mRefresh";
+                        nowqizi=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/nowwho&x="+report_x+"&y="+report_y+"'",".PokeGamingChannel");
+                        qiziUDx=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/panupdatex'",".PokeGamingChannel");
+                        qiziUDy=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/panupdatey'",".PokeGamingChannel");
+                        cout <<".";
+                        UDqiziX=atoi(qiziUDx.c_str());
+                        UDqiziY=atoi(qiziUDy.c_str());
+                        wuziqipan[UDqiziX][UDqiziY]=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/pan&x="+qiziUDx+"&y="+qiziUDy+"'",".PokeGamingChannel");
+                        cout <<".";
+                        x=1;
+                        y=1;
+                        while (x<=21&&winner==0)
+                        {
+                            cout<<"+";
+                            while(y<=21&&winner==0) {
+                                cout <<"-";
+                                //@
+                                if (wuziqipan[x][y]=="@"&&wuziqipan[x+1][y]=="@"&&wuziqipan[x+2][y]=="@"&&wuziqipan[x+3][y]=="@"&&wuziqipan[x+4][y]=="@"){
+                                    //gaming=0;
+                                    winner=1;
+                                }
+                                else if (wuziqipan[x][y]=="@"&&wuziqipan[x-1][y]=="@"&&wuziqipan[x-2][y]=="@"&&wuziqipan[x-3][y]=="@"&&wuziqipan[x-4][y]=="@"){
+                                    //gaming=0;
+                                    winner=1;
+                                }
+                                else if (wuziqipan[x][y+1]=="@"&&wuziqipan[x][y+2]=="@"&&wuziqipan[x][y+3]=="@"&&wuziqipan[x][y+4]=="@"&&wuziqipan[x][y]=="@"){
+                                    //gaming=0;
+                                    winner=1;
+                                }
+                                else if (wuziqipan[x][y-1]=="@"&&wuziqipan[x][y-2]=="@"&&wuziqipan[x][y-3]=="@"&&wuziqipan[x][y-4]=="@"&&wuziqipan[x][y]=="@"){
+                                    //gaming=0;
+                                    winner=1;
+                                }
+                                else if (wuziqipan[x+1][y+1]=="@"&&wuziqipan[x+2][y+2]=="@"&&wuziqipan[x+3][y+3]=="@"&&wuziqipan[x+4][y+4]=="@"&&wuziqipan[x][y]=="@"){
+                                    //gaming=0;
+                                    winner=1;
+                                }
+                                else if (wuziqipan[x-1][y-1]=="@"&&wuziqipan[x-2][y-2]=="@"&&wuziqipan[x-3][y-3]=="@"&&wuziqipan[x-4][y-4]=="@"&&wuziqipan[x][y]=="@"){
+                                    //gaming=0;
+                                    winner=1;
+                                }
+                                else if (wuziqipan[x-1][y+1]=="@"&&wuziqipan[x-2][y+2]=="@"&&wuziqipan[x-3][y+3]=="@"&&wuziqipan[x-4][y+4]=="@"&&wuziqipan[x][y]=="@"){
+                                    //gaming=0;
+                                    winner=1;
+                                }
+                                else if (wuziqipan[x+1][y-1]=="@"&&wuziqipan[x+2][y-2]=="@"&&wuziqipan[x+3][y-3]=="@"&&wuziqipan[x+4][y-4]=="@"&&wuziqipan[x][y]=="@"){
+                                    //gaming=0;
+                                    winner=1;
+                                }
+                                //#
+                                if (wuziqipan[x][y]=="#"&&wuziqipan[x+1][y]=="#"&&wuziqipan[x+2][y]=="#"&&wuziqipan[x+3][y]=="#"&&wuziqipan[x+4][y]=="#"){
+                                    //gaming=0;
+                                    winner=2;
+                                }
+                                else if (wuziqipan[x][y]=="#"&&wuziqipan[x-1][y]=="#"&&wuziqipan[x-2][y]=="#"&&wuziqipan[x-3][y]=="#"&&wuziqipan[x-4][y]=="#"){
+                                    //gaming=0;
+                                    winner=2;
+                                }
+                                else if (wuziqipan[x][y+1]=="#"&&wuziqipan[x][y+2]=="#"&&wuziqipan[x][y+3]=="#"&&wuziqipan[x][y+4]=="#"&&wuziqipan[x][y]=="#"){
+                                    //gaming=0;
+                                    winner=2;
+                                }
+                                else if (wuziqipan[x][y-1]=="#"&&wuziqipan[x][y-2]=="#"&&wuziqipan[x][y-3]=="#"&&wuziqipan[x][y-4]=="#"&&wuziqipan[x][y]=="#"){
+                                    //gaming=0;
+                                    winner=2;
+                                }
+                                else if (wuziqipan[x+1][y+1]=="#"&&wuziqipan[x+2][y+2]=="#"&&wuziqipan[x+3][y+3]=="#"&&wuziqipan[x+4][y+4]=="#"&&wuziqipan[x][y]=="#"){
+                                    //gaming=0;
+                                    winner=2;
+                                }
+                                else if (wuziqipan[x-1][y-1]=="#"&&wuziqipan[x-2][y-2]=="#"&&wuziqipan[x-3][y-3]=="#"&&wuziqipan[x-4][y-4]=="#"&&wuziqipan[x][y]=="#"){
+                                    //gaming=0;
+                                    winner=2;
+                                }
+                                else if (wuziqipan[x-1][y+1]=="#"&&wuziqipan[x-2][y+2]=="#"&&wuziqipan[x-3][y+3]=="#"&&wuziqipan[x-4][y+4]=="#"&&wuziqipan[x][y]=="#"){
+                                    //gaming=0;
+                                    winner=2;
+                                }
+                                else if (wuziqipan[x+1][y-1]=="#"&&wuziqipan[x+2][y-2]=="#"&&wuziqipan[x+3][y-3]=="#"&&wuziqipan[x+4][y-4]=="#"&&wuziqipan[x][y]=="#"){
                                     //gaming=0;
                                     winner=2;
                                 }
