@@ -98,110 +98,123 @@ if (read ("USERDATA/".$_GET["username"])==md5($_GET["password"])){
 	if ($_GET["mode"]=="games/wuziqi"){
 		$nowwaitingroom=read ("game-wuziqi/game");
 		if (file_exists("game-wuziqi/$nowwaitingroom.started")){
-		    write("game-wuziqi/game",$nowwaitingroom+1);
-		    echo "Error Please Rejoin";
-	}else {
+			write ("game-wuziqi/game",$nowwaitingroom+1);
+			echo "Error Please Rejoin";
+		}else {
 			if (!file_exists("game-wuziqi/$nowwaitingroom.playerRED")){
 				write ("game-wuziqi/$nowwaitingroom.playerRED",$username);
-			    write ("game-wuziqi/$username.gamingroom",$nowwaitingroom);
+				write ("game-wuziqi/$username.gamingroom",$nowwaitingroom);
 				echo "$nowwaitingroom";
 			}
 			elseif (!file_exists("game-wuziqi/$nowwaitingroom.playerBlue")){
 				write ("game-wuziqi/$nowwaitingroom.playerBlue",$username);
 				write ("game-wuziqi/$username.gamingroom",$nowwaitingroom);
 				write ("game-wuziqi/$nowwaitingroom.started","1");
-				
 				mkdir("game-wuziqi/$nowwaitingroom-pan/");
-				while ($x<=21)
-                {
-                    while($y<=21) {
-                    write("game-wuziqi/$nowwaitingroom-pan/-$x-$y","*");
-                    $y++;
-                 }
-                 $y=-1;
-                 $x++;
-                }
-                write("game-wuziqi/$nowwaitingroom-pan/lastUPDATEx",1);
-                write("game-wuziqi/$nowwaitingroom-pan/lastUPDATEy",1);
-			echo "$nowwaitingroom";
-			write("game-wuziqi/game",$nowwaitingroom+1);
+				while ($x<=21){
+					while ($y<=21){
+						write ("game-wuziqi/$nowwaitingroom-pan/-$x-$y","*");
+						$y++;
+					}
+					$y=-1;
+					$x++;
+				}
+				write ("game-wuziqi/$nowwaitingroom-pan/lastUPDATEx",1);
+				write ("game-wuziqi/$nowwaitingroom-pan/lastUPDATEy",1);
+				write ("game-wuziqi/$nowwaitingroom-pan/lastqizi","@");
+				echo "$nowwaitingroom";
+				write ("game-wuziqi/game",$nowwaitingroom+1);
 			}
 		}
 	}
 	if ($_GET["mode"]=="games/wuziqi/gaming/pan"){
-	    $gamingroom=read("game-wuziqi/$username.gamingroom");
-        echo read("game-wuziqi/$gamingroom-pan/-".$_GET["x"]."-".$_GET["y"]);
+		$gamingroom=read ("game-wuziqi/$username.gamingroom");
+		echo read ("game-wuziqi/$gamingroom-pan/-".$_GET["x"]."-".$_GET["y"]);
 	}
 	if ($_GET["mode"]=="games/wuziqi/gaming/wait"){
-	    $gamingroom=read("game-wuziqi/$username.gamingroom");
-	    if(file_exists("game-wuziqi/$gamingroom.started"))
-	    {
-	        echo "GameStart";
-	    }
-	    else
-	    {
-	        echo "Waiting";
-	    }
+		$gamingroom=read ("game-wuziqi/$username.gamingroom");
+		if (file_exists("game-wuziqi/$gamingroom.started")){
+			echo "GameStart";
+		}else {
+			echo "Waiting";
+		}
 	}
 	if ($_GET["mode"]=="games/wuziqi/gaming/report"){
-	    $gamingroom=read("game-wuziqi/$username.gamingroom");
-	    if (read("game-wuziqi/$gamingroom.playerBlue")==$username)
-	    {
-	        $qizi="@";
-	    }
-	    elseif (read("game-wuziqi/$gamingroom.playerRED")==$username)
-	    {
-	        $qizi="#";
-	    }
-        write("game-wuziqi/$gamingroom-pan/-".$_GET["x"]."-".$_GET["y"],$qizi);
-        write("game-wuziqi/$gamingroom-pan/lastUPDATEx",$_GET["x"]);
-        write("game-wuziqi/$gamingroom-pan/lastUPDATEy",$_GET["y"]);
-        write("game-wuziqi/$gamingroom-pan/lastqizi",$qizi);
-        echo "OK";
+		$gamingroom=read ("game-wuziqi/$username.gamingroom");
+		if (read ("game-wuziqi/$gamingroom.playerBlue")==$username){
+			$qizi="@";
+		}
+		elseif (read ("game-wuziqi/$gamingroom.playerRED")==$username){
+			$qizi="#";
+		}
+		write ("game-wuziqi/$gamingroom-pan/-".$_GET["x"]."-".$_GET["y"],$qizi);
+		write ("game-wuziqi/$gamingroom-pan/lastUPDATEx",$_GET["x"]);
+		write ("game-wuziqi/$gamingroom-pan/lastUPDATEy",$_GET["y"]);
+		write ("game-wuziqi/$gamingroom-pan/lastqizi",$qizi);
+		echo "OK";
 	}
+	
 	if ($_GET["mode"]=="games/wuziqi/gaming/panupdatex"){
-	    $gamingroom=read("game-wuziqi/$username.gamingroom");
-        echo read("game-wuziqi/$gamingroom-pan/lastUPDATEx");
+		$gamingroom=read ("game-wuziqi/$username.gamingroom");
+		echo read ("game-wuziqi/$gamingroom-pan/lastUPDATEx");
 	}
 	if ($_GET["mode"]=="games/wuziqi/gaming/panupdatey"){
-	    $gamingroom=read("game-wuziqi/$username.gamingroom");
-        echo read("game-wuziqi/$gamingroom-pan/lastUPDATEy");
+		$gamingroom=read ("game-wuziqi/$username.gamingroom");
+		echo read ("game-wuziqi/$gamingroom-pan/lastUPDATEy");
 	}
 	if ($_GET["mode"]=="games/wuziqi/gaming/who"){
-	    $gamingroom=read("game-wuziqi/$username.gamingroom");
-	    if (read("game-wuziqi/$gamingroom.playerBlue")==$username)
-	    {
-	        $qizi="@";
-	    }
-	    elseif (read("game-wuziqi/$gamingroom.playerRED")==$username)
-	    {
-	        $qizi="#";
-	    }
-	    echo $qizi;
+		$gamingroom=read ("game-wuziqi/$username.gamingroom");
+		if (read ("game-wuziqi/$gamingroom.playerBlue")==$username){
+			$qizi="@";
+		}
+		elseif (read ("game-wuziqi/$gamingroom.playerRED")==$username){
+			$qizi="#";
+		}
+		echo $qizi;
 	}
 	if ($_GET["mode"]=="games/wuziqi/gaming/nowwho"){
-	    $gamingroom=read("game-wuziqi/$username.gamingroom");
-	    if(read("game-wuziqi/$gamingroom-pan/lastqizi")=="#")
-	    {
-	        $qizi="@";
-	    }
-	    elseif(read("game-wuziqi/$gamingroom-pan/lastqizi")=="@")
-	    {
-	        $qizi="#";
-	    }
-	   
-	    echo $qizi;
+		$gamingroom=read ("game-wuziqi/$username.gamingroom");
+		if (read ("game-wuziqi/$gamingroom-pan/lastqizi")=="#"){
+			$qizi="@";
+		}
+		elseif (read ("game-wuziqi/$gamingroom-pan/lastqizi")=="@"){
+			$qizi="#";
+		}
+		elseif (read ("game-wuziqi/$gamingroom-pan/lastqizi")=="*")
+		{
+		    $qizi="*";
+		}
+		echo $qizi;
 	}
 	if ($_GET["mode"]=="games/wuziqi/gaming/xiaziok"){
-	    $gamingroom=read("game-wuziqi/$username.gamingroom");
-	    if(read("game-wuziqi/$gamingroom-pan/lastqizi")=="#")
-	    {
-	        $qizi="@";
-	    }
-	    elseif(read("game-wuziqi/$gamingroom-pan/lastqizi")=="@")
-	    {
-	        $qizi="#";
-	    }
-	   
+		$gamingroom=read ("game-wuziqi/$username.gamingroom");
+		if (read ("game-wuziqi/$gamingroom-pan/lastqizi")=="#"){
+			$qizi="@";
+		}
+		elseif (read ("game-wuziqi/$gamingroom-pan/lastqizi")=="@"){
+			$qizi="#";
+		}
+	}
+	if ($_GET["mode"]=="games/wuziqi/gaming/winner"){
+		$gamingroom=read ("game-wuziqi/$username.gamingroom");
+		if (read ("game-wuziqi/$gamingroom.playerBlue")==$username){
+			$qizi="@";
+			$duishou="#";
+		}
+		elseif (read ("game-wuziqi/$gamingroom.playerRED")==$username){
+			$qizi="#";
+			$duishou="@";
+		}
+	    write("game-wuziqi/$gamingroom-pan/lastqizi","*");
+		write("game-wuziqi/$gamingroom-pan/winner-reporter-$qizi",$_GET["id"]);
+		if(read("game-wuziqi/$gamingroom-pan/winner-reporter-$duishou","-1")==$_GET["id"])
+		{
+		    echo "0";
+		}
+		else
+		{
+		    echo "1";
+		}
+		
 	}
 }
