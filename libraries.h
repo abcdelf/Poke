@@ -8,8 +8,6 @@
 #include <string>
 #include <string.h>
 
-//#include <curl/curl.h>
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -24,13 +22,14 @@
 #include <termios.h>
 
 #include <arpa/inet.h>
+#include <netinet/in.h>
 
 #include <sys/select.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 
-#define BUFSIZE 1024
+#include "httpsocket.h"
 using namespace std;
 string str_replacve(string dstPattern,string pattern,string str,int count=-1)
 {
@@ -42,7 +41,7 @@ string str_replacve(string dstPattern,string pattern,string str,int count=-1)
     for(i=0; i<szStr; i++)
     {
         if(string::npos == (pos=str.find(pattern,i)))  break;
-        if(pos < szStr)
+        if((int)pos < szStr)
         {
             retStr += str.substr(i,pos-i) + dstPattern;
             i=pos+pattern.length()-1;
@@ -119,14 +118,43 @@ extern bool write(string filename,string word)
 }
 extern string curl(string url,string tmp = ".PokeNetTmp")
 {
-    url="wget -o .PokeNetLogs -O "+tmp+" http://v.starfiles.tk:88/"+url;
-    string rm;
-    rm="rm -rf "+tmp;
-    const char*u = url.c_str();
-    const char*r = rm.c_str();
-    system(u);
+    url="http://v.starfiles.tk:88"+url;
+    FILE *fp;
+    if(!(fp = fopen(tmp.c_str(),"wb+")))
+    {
+        printf("can't open local file\n");
+        return "Error";
+    }
+    CHttpSocket *cs = new CHttpSocket();
+    cs->Socket();
+    cs->Connect("v.starfiles.tk",80);
+    long len = 0;
+    std::string req = cs->FormatRequestHeader("v.starfiles.tk",url.c_str(),len,NULL,NULL,0,0,0);
+    cs->SendRequest(req.c_str(),len);
+    int lens;
+    std::string head = cs->GetResponseHeader(lens);
+    //printf("%s\n",head.c_str());
+    int cnt = 0;
+    int flag = head.find("Content-Length:",0);
+    int endFlag = head.find("\r\n",flag);
+    std::string subStr = head.substr(flag,endFlag-flag);
+    sscanf(subStr.c_str(),"Content-Length: %d",&lens);
+    fseek(fp,0,0);
+    while(cnt < lens)
+    {
+        char buff[1025];
+        int tmplen = cs->Receive(buff,1024);
+        cnt += tmplen;
+        fwrite(buff,1,tmplen,fp);
+    }
+    fclose(fp);
+    //url="wget -o .PokeNetLogs -O "+tmp+" http://v.starfiles.tk:88/"+url;
+    //string rm;
+    //rm="rm -rf "+tmp;
+    //const char*u = url.c_str();
+    //system(u);
     string data=read(tmp);
-    system(r);
+    //system(r);
     return data;
 }
 class user
@@ -138,7 +166,7 @@ public:
     bool login(string name,string pwd)
     {
         //string realpwd=read("accounts/"+name+"/password");
-        string feelback=curl("'/project/project.php?mode=login&username="+name+"&password="+pwd+"'",".PokeLoginTmpFile");
+        string feelback=curl("/project/project.php?mode=login&username="+name+"&password="+pwd+"",".PokeLoginTmpFile");
         if (feelback=="似乎有什么不对劲")
         {
             cout << "\033[31mHave no this User\033[0m";
@@ -163,7 +191,7 @@ public:
     {
         //const char*n = name.c_str();
         //string checkuser=read("accounts/"+name+"/password");
-        string feelback=curl("'/project/project.php?mode=reg&username="+name+"&password="+pwd+"'",".PokeRegTmpFile");
+        string feelback=curl("/project/project.php?mode=reg&username="+name+"&password="+pwd+"",".PokeRegTmpFile");
         if (feelback=="OK")
         {
             string f;

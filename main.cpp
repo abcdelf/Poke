@@ -103,7 +103,7 @@ int main()
             cout<<"\033[0m\033[33mLoading\n\033[0m";
             if (u.reg(username,password))
             {
-                curl("'/project/project.php?mode=chat/start&username="+username+"&password="+password+"'",".PokeLiveChatTmpFILE");
+                curl("/project/project.php?mode=chat/start&username="+username+"&password="+password,".PokeLiveChatTmpFILE");
                 cout<<endl;
                 cout<<"You are now Online\n";
                 cout<<"1) Listening Message\n";
@@ -130,7 +130,7 @@ int main()
             cout<<"\033[0m\033[33mLoading\n\033[0m";
             if (u.login(username,password))
             {
-                curl("'/project/project.php?mode=chat/start&username="+username+"&password="+password+"'",".PokeLiveChatTmpFILE");
+                curl("/project/project.php?mode=chat/start&username="+username+"&password="+password+"",".PokeLiveChatTmpFILE");
                 cout<<endl;
                 quit=0;
             }
@@ -148,18 +148,18 @@ int main()
         }
         if (quit==12)
         {
-            //curl("'/project/project.php?mode=chat/clear&username="+u.username+"&password="+u.password+"'",".PokeChatClearTmpFile");
+            //curl("/project/project.php?mode=chat/clear&username="+u.username+"&password="+u.password+"",".PokeChatClearTmpFile");
             quit=0;
         }
         if (quit==20)
         {
-            cout<<curl("'/project/project.php?mode=CP&username="+u.username+"&password="+u.password+"'",".PokePlayer");
+            cout<<curl("/project/project.php?mode=CP&username="+u.username+"&password="+u.password+"",".PokePlayer");
             string in;
             cin>>in;
             cout<<"\033[33mLoading\n\033[0m";
             cout<<"Downloading Data FILE From The Poke Net\n";
-            string bad=curl("'/project/project.php?mode=CPD&what="+in+"&username="+u.username+"&password="+u.password+"'",".PokePlayerDownload");
-            string ur="'/project/project.php?mode=CPD&what="+in+"&username="+u.username+"&password="+u.password+"'";
+            string bad=curl("/project/BadApple",".PokePlayerDownload");
+            string ur="/project/project.php?mode=CPD&what="+in+"&username="+u.username+"&password="+u.password+"";
             if (bad==""||bad.length()<200)
             {
                 if (bad=="")
@@ -269,13 +269,13 @@ int main()
             }
         }
         if (quit==31) {
-            string room=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi'",".PokeGamingChannel");
+            string room=curl("/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi",".PokeGamingChannel");
             string wait="Waiting";
             clear();
             cout<<"Looking for the opponent..\n";
             while(wait=="Waiting")
             {
-                wait=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/wait'",".PokeGamingChannel");
+                wait=curl("/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/wait",".PokeGamingChannel");
                 sleep(0.25);
             }
             if (wait=="GameStart")
@@ -314,8 +314,8 @@ int main()
                 string winners;
                 string gamecofeelback;
                 int re=1;
-                string qizi=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/who&x="+report_x+"&y="+report_y+"'",".PokeGamingChannel");
-                string nowqizi=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/nowwho&x="+report_x+"&y="+report_y+"'",".PokeGamingChannel");
+                string qizi=curl("/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/who&x="+report_x+"&y="+report_y+"",".PokeGamingChannel");
+                string nowqizi=curl("/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/nowwho&x="+report_x+"&y="+report_y+"",".PokeGamingChannel");
                 string qiziUDx,qiziUDy;
                 int UDqiziX,UDqiziY;
                 int ry,rx;
@@ -372,7 +372,7 @@ int main()
                             stringstream w;
                             w<<ry;
                             w>>report_y;
-                            curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/report&x="+report_x+"&y="+report_y+"'",".PokeGamingChannel");
+                            curl("/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/report&x="+report_x+"&y="+report_y+"",".PokeGamingChannel");
                             re=1;
                         }
                         else
@@ -464,13 +464,13 @@ int main()
                                     stringstream winnerits;
                                     winnerits<<winner;
                                     winnerits>>winners;
-                                    gamecofeelback=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/winner&id="+winners+"'",".PokeGamingChannel");
+                                    gamecofeelback=curl("/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/winner&id="+winners+"",".PokeGamingChannel");
                                     gaming=atoi(gamecofeelback.c_str());
                                     wait="END";
                                 }
                                 else
                                 {
-                                    gamecofeelback=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/winner&id=0'",".PokeGamingChannel");
+                                    gamecofeelback=curl("/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/winner&id=0",".PokeGamingChannel");
                                     gaming=atoi(gamecofeelback.c_str());
                                 }
 
@@ -488,7 +488,7 @@ int main()
                         cout<<endl;
                         while(nowqizi!=qizi)
                         {
-                            nowqizi=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/nowwho&x="+report_x+"&y="+report_y+"'",".PokeGamingChannel");
+                            nowqizi=curl("/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/nowwho&x="+report_x+"&y="+report_y+"",".PokeGamingChannel");
                             sleep(0.25);
                         }
                         re=1;
@@ -496,13 +496,13 @@ int main()
                     if (re==1)
                     {
                         cout <<"\033[1;34mRefresh";
-                        nowqizi=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/nowwho&x="+report_x+"&y="+report_y+"'",".PokeGamingChannel");
-                        qiziUDx=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/panupdatex'",".PokeGamingChannel");
-                        qiziUDy=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/panupdatey'",".PokeGamingChannel");
+                        nowqizi=curl("/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/nowwho&x="+report_x+"&y="+report_y+"",".PokeGamingChannel");
+                        qiziUDx=curl("/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/panupdatex",".PokeGamingChannel");
+                        qiziUDy=curl("/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/panupdatey",".PokeGamingChannel");
                         cout <<".";
                         UDqiziX=atoi(qiziUDx.c_str());
                         UDqiziY=atoi(qiziUDy.c_str());
-                        wuziqipan[UDqiziX][UDqiziY]=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/pan&x="+qiziUDx+"&y="+qiziUDy+"'",".PokeGamingChannel");
+                        wuziqipan[UDqiziX][UDqiziY]=curl("/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/pan&x="+qiziUDx+"&y="+qiziUDy+"",".PokeGamingChannel");
                         cout <<".";
                         x=1;
                         y=1;
@@ -587,7 +587,7 @@ int main()
                                     gamecofeelback="-1";
                                     while(gamecofeelback=="-1")
                                     {
-                                        gamecofeelback=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/winner&id="+winners+"'",".PokeGamingChannel");
+                                        gamecofeelback=curl("/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/winner&id="+winners+"",".PokeGamingChannel");
                                     }
                                     if (gamecofeelback=="0")
                                     {
@@ -729,7 +729,7 @@ int main()
                 cout << "\n\033[36m==========================\033[0m\n";
                 cout << "If You want to send message,Start a new program And In Logged Menu Choose 2)\n";
                 cout << "Press Ctrl+C to exit\n";
-                msg=curl("'/project/project.php?mode=chat&username="+u.username+"&password="+u.password+"'",".PokeLiveChatTmpFILE");
+                msg=curl("/project/project.php?mode=chat&username="+u.username+"&password="+u.password+"",".PokeLiveChatTmpFILE");
                 sleep(0.1);
                 clear();
             }
@@ -751,7 +751,7 @@ int main()
                 }
                 else
                 {
-                    string feelback=curl("'/project/project.php?mode=chat/report&t="+msg+"&username="+u.username+"&password="+u.password+"'",".PokeChatSendMsgTMPFILE");
+                    string feelback=curl("/project/project.php?mode=chat/report&t="+msg+"&username="+u.username+"&password="+u.password+"",".PokeChatSendMsgTMPFILE");
                     if (feelback=="OK")
                     {
                         clear();
