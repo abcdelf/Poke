@@ -8,7 +8,7 @@
 #include <string>
 #include <string.h>
 
-#include <curl/curl.h>
+//#include <curl/curl.h>
 
 #include <stdio.h>
 #include <stdlib.h>
