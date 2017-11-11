@@ -2,38 +2,35 @@
 # 1v1五子棋
 # 聊天室
 
-# -编译
-  ~$ g++ main.cpp -o Poke \n
+# -编译<br>
+  ~$ g++ main.cpp -o Poke <br>
   Or<br>
-  ~$ gcc main.cpp -o Poke \n
+  ~$ gcc main.cpp -o Poke <br>
   ...
-# c++头文件
-<iostream>
-<sstream>
-<fstream>
-<cassert>
-<cstdio>
-<string>
-<string.h>
- <stdio.h>
-  <stdlib.h>
+# c++头文件<br>
+#include <iostream><br>
+#include <sstream><br>
+#include <fstream><br>
+#include <cassert><br>
+#include <cstdio><br>
+#include <string><br>
+#include <string.h><br>
+#include <stdio.h><br>
+#include <stdlib.h><br>
+#include <dirent.h><br>
+#include <unistd.h><br>
+#include <pthread.h><br>
+#include <netdb.h><br>
+#include <fcntl.h><br>
+#include <errno.h><br>
+#include <termios.h><br>
+#include <arpa/inet.h><br>
+#include <netinet/in.h><br>
+#include <sys/select.h><br>
+#include <sys/stat.h><br>
+#include <sys/types.h><br>
+#include <sys/socket.h><br>
 
-#include <dirent.h>
-#include <unistd.h>
-#include <pthread.h>
-#include <netdb.h>
 
-#include <fcntl.h>
-
-#include <errno.h>
-#include <termios.h>
-
-#include <arpa/inet.h>
-#include <netinet/in.h>
-
-#include <sys/select.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <sys/socket.h>
--网络功能
-  17.11.11-废除系统命令"wget"-更新为Linux Socket连接
+#网络功能<br>
+  17.11.11-废除系统命令"wget"-更新为Linux Socket连接<br>
