@@ -1,4 +1,4 @@
-﻿#include "libraries.h"
+#include "libraries.h"
 using namespace std;
 int menu(string username="",int menu=0)
 {
@@ -10,9 +10,9 @@ int menu(string username="",int menu=0)
             string in="0";
             while (in!="1"&&in!="2"&&in!="3")
             {
-                system("clear");
+                clear();
                 cout << "Please Set Up A Accounts to continue\n";
-                cout<<"\033[36m==========================\n\033[0m";
+                cout<<"\033[36m==========================\n\033[1m";
                 cout<<"1) Login\n"<<"2) Register\n"<<"3) Quit\n";
                 cin>>in;
             }
@@ -33,8 +33,11 @@ int menu(string username="",int menu=0)
         else
         {
             string in="0";
-            system("clear");
-            cout<<"1) Chat\n2) Chat-Send Message\n3) Character Player\n4) Games"<<"\n0) Quit\n";
+            clear();
+            cout<<"\033[1;32mYou are now Online\n";
+            cout<<"Listening Message\n";
+            cout<<endl<<"\033[0m";
+            cout<<"\033[1;36m1) Chat\n2) Chat-Send Message\n3) Character Player\n4) Games"<<"\n0) Quit\n\033[0m";
             cin>>in;
             if (in=="0")
             {
@@ -61,9 +64,9 @@ int menu(string username="",int menu=0)
     else if(menu==1)
     {
         string in="0";
-        system("clear");
+        clear();
         cout<<"Games:\n";
-        cout<<"1) 五子棋\n"<<"\n0) Leave\n";
+        cout<<"\033[1;36m1) 五子棋\n"<<"\n0) Leave\n";
         cin>>in;
         if (in=="0")
         {
@@ -82,7 +85,7 @@ int main()
     int quit=0;
     while (quit!=1)
     {
-        system("clear");
+        clear();
         while(quit==0)
         {
             quit=menu(u.username);
@@ -91,7 +94,7 @@ int main()
         {
             string username;
             string password;
-            system("clear");
+            clear();
             cout<<"\033[36m--Register--\n\033[0m";
             cout<<"Username:";
             cin >> username;
@@ -108,7 +111,7 @@ int main()
             }
             else
             {
-                cout<<"\033[31mUser exist \033[0m\n\033[33mKey Anything to continue(Letter..Number...\n\033[0m";
+                cout<<"\033[1;31mUser exist \033[0m\n\033[33mKey Anything to continue(Letter..Number...\n\033[0m";
                 quit=0;
                 cin>>username;
             }
@@ -118,7 +121,7 @@ int main()
         {
             string username;
             string password;
-            system("clear");
+            clear();
             cout<<"\033[36m--Login--\n\033[0m";
             cout<<"Username:";
             cin >> username;
@@ -129,9 +132,6 @@ int main()
             {
                 curl("'/project/project.php?mode=chat/start&username="+username+"&password="+password+"'",".PokeLiveChatTmpFILE");
                 cout<<endl;
-                cout<<"You are now Online\n";
-                cout<<"1) Listening Message\n";
-                sleep(2);
                 quit=0;
             }
             else
@@ -143,7 +143,7 @@ int main()
         }
         if (quit==1)
         {
-            system("clear");
+            clear();
             return 0;
         }
         if (quit==12)
@@ -192,7 +192,7 @@ int main()
                 string s;
                 while(i<229880)
                 {
-                    system("clear");
+                    clear();
                     j=-1;
                     while(j<34)
                     {
@@ -259,7 +259,7 @@ int main()
                     cout << "Powered by Poke\n";
                     usleep(33000);
                 }
-                system("clear");
+                clear();
                 cout<<"Play END"<<endl;
                 infile.close();
                 cout<<"\033[31m\033[0m\n\033[33mKey Anything to continue(Letter..Number...\n\033[0m";
@@ -271,7 +271,7 @@ int main()
         if (quit==31) {
             string room=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi'",".PokeGamingChannel");
             string wait="Waiting";
-            system("clear");
+            clear();
             cout<<"Looking for the opponent..\n";
             while(wait=="Waiting")
             {
@@ -310,49 +310,61 @@ int main()
                     x=x+1;
                 }
                 int gaming=1;
+                int winner=0;
+                string winners;
+                string gamecofeelback;
+                int re=1;
                 string qizi=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/who&x="+report_x+"&y="+report_y+"'",".PokeGamingChannel");
                 string nowqizi=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/nowwho&x="+report_x+"&y="+report_y+"'",".PokeGamingChannel");
                 string qiziUDx,qiziUDy;
                 int UDqiziX,UDqiziY;
                 int ry,rx;
+                string colourful_red="\033[1;31m@\033[0m";
+                string colourful_blue="\033[1;34m#\033[0m";
                 while(gaming==1)
                 {
-                    nowqizi=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/nowwho&x="+report_x+"&y="+report_y+"'",".PokeGamingChannel");
-                    qiziUDx=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/panupdatex'",".PokeGamingChannel");
-                    qiziUDy=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/panupdatey'",".PokeGamingChannel");
-                    UDqiziX=atoi(qiziUDx.c_str());
-                    UDqiziY=atoi(qiziUDy.c_str());
-                    wuziqipan[UDqiziX][UDqiziY]=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/pan&x="+qiziUDx+"&y="+qiziUDy+"'",".PokeGamingChannel");
-                    system("clear");
-                    cout << endl;
-                    system("clear");
-                    cout <<endl<<"Y 1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 X\n";
+                    cout<<endl;
+                    clear();
+                    clear();
+                    cout<<"\033[1;31mX 1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 \033[0m\033[1;34mY\033[0m\n";
                     int showx=1;
                     x=0;
                     y=0;
                     while (x<20)
                     {
-                        cout<<"  ";
+                        cout<<"\033[0m  ";
                         while(y<20) {
-                            cout<<wuziqipan[x][y]<<"  ";
+                            if (wuziqipan[x][y]=="@")
+                            {
+                                cout<<"\033[1m"<<colourful_red<<"\033[1m  ";
+                            }
+                            else if(wuziqipan[x][y]=="#")
+                            {
+                                cout<<"\033[1m"<<colourful_blue<<"\033[1m  ";
+                            }
+                            else
+                            {
+                                cout<<"\033[1m"<<wuziqipan[x][y]<<"\033[1m  ";
+                            }
                             y++;
+
                         }
                         y=0;
                         x=x+1;
-                        cout<<showx<<"\n";
+                        cout<<"\033[1;34m"<<showx<<"\033[0m\n\033[1m";
                         showx++;
                     }
                     if (nowqizi==qizi)
                     {
-                        cout<<"X:";
-                        cin>>report_x;
-                        cout<<endl<<"\nY:";
+                        cout<<endl<<"\nX:";
                         cin>>report_y;
+                        cout<<"Y:";
+                        cin>>report_x;
                         rx=atoi(report_x.c_str());
                         ry=atoi(report_y.c_str());
                         rx=rx-1;
                         ry=ry-1;
-                        if (rx<=20&&ry<=20)
+                        if (rx>=0&&ry>=0&&rx<=20&&ry<=20&&wuziqipan[rx][ry]=="*")
                         {
                             stringstream r;
                             r<<rx;
@@ -361,17 +373,299 @@ int main()
                             w<<ry;
                             w>>report_y;
                             curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/report&x="+report_x+"&y="+report_y+"'",".PokeGamingChannel");
+                            re=1;
                         }
+                        else
+                        {
+                            cout<<"\n\033[1;31mINPUT ERROR!";
+                            re=0;
+                            cout<<endl;
+                            sleep(2);
+                        }
+                    }
+                    else if(nowqizi=="*")
+                    {
+                        cout<<"The other side initiates the defeat judgment";
+                        cout<<"Checking";
+                        x=1;
+                        y=1;
+                        while (x<=21&&winner==0)
+                        {
+                            cout<<endl;
+                            while(y<=21&&winner==0) {
+                                //@
+                                if (wuziqipan[x][y]=="@"&&wuziqipan[x+1][y]=="@"&&wuziqipan[x+2][y]=="@"&&wuziqipan[x+3][y]=="@"&&wuziqipan[x+4][y]=="@"){
+                                    //gaming=0;
+                                    winner=1;
+                                }
+                                else if (wuziqipan[x][y]=="@"&&wuziqipan[x-1][y]=="@"&&wuziqipan[x-2][y]=="@"&&wuziqipan[x-3][y]=="@"&&wuziqipan[x-4][y]=="@"){
+                                    //gaming=0;
+                                    winner=1;
+                                }
+                                else if (wuziqipan[x][y+1]=="@"&&wuziqipan[x][y+2]=="@"&&wuziqipan[x][y+3]=="@"&&wuziqipan[x][y+4]=="@"&&wuziqipan[x][y]=="@"){
+                                    //gaming=0;
+                                    winner=1;
+                                }
+                                else if (wuziqipan[x][y-1]=="@"&&wuziqipan[x][y-2]=="@"&&wuziqipan[x][y-3]=="@"&&wuziqipan[x][y-4]=="@"&&wuziqipan[x][y]=="@"){
+                                    //gaming=0;
+                                    winner=1;
+                                }
+                                else if (wuziqipan[x+1][y+1]=="@"&&wuziqipan[x+2][y+2]=="@"&&wuziqipan[x+3][y+3]=="@"&&wuziqipan[x+4][y+4]=="@"&&wuziqipan[x][y]=="@"){
+                                    //gaming=0;
+                                    winner=1;
+                                }
+                                else if (wuziqipan[x-1][y-1]=="@"&&wuziqipan[x-2][y-2]=="@"&&wuziqipan[x-3][y-3]=="@"&&wuziqipan[x-4][y-4]=="@"&&wuziqipan[x][y]=="@"){
+                                    //gaming=0;
+                                    winner=1;
+                                }
+                                //#
+                                if (wuziqipan[x][y]=="#"&&wuziqipan[x+1][y]=="#"&&wuziqipan[x+2][y]=="#"&&wuziqipan[x+3][y]=="#"&&wuziqipan[x+4][y]=="#"){
+                                    //gaming=0;
+                                    winner=2;
+                                }
+                                else if (wuziqipan[x][y]=="#"&&wuziqipan[x-1][y]=="#"&&wuziqipan[x-2][y]=="#"&&wuziqipan[x-3][y]=="#"&&wuziqipan[x-4][y]=="#"){
+                                    //gaming=0;
+                                    winner=2;
+                                }
+                                else if (wuziqipan[x][y+1]=="#"&&wuziqipan[x][y+2]=="#"&&wuziqipan[x][y+3]=="#"&&wuziqipan[x][y+4]=="#"&&wuziqipan[x][y]=="#"){
+                                    //gaming=0;
+                                    winner=2;
+                                }
+                                else if (wuziqipan[x][y-1]=="#"&&wuziqipan[x][y-2]=="#"&&wuziqipan[x][y-3]=="#"&&wuziqipan[x][y-4]=="#"&&wuziqipan[x][y]=="#"){
+                                    //gaming=0;
+                                    winner=2;
+                                }
+                                else if (wuziqipan[x+1][y+1]=="#"&&wuziqipan[x+2][y+2]=="#"&&wuziqipan[x+3][y+3]=="#"&&wuziqipan[x+4][y+4]=="#"&&wuziqipan[x][y]=="#"){
+                                    //gaming=0;
+                                    winner=2;
+                                }
+                                else if (wuziqipan[x-1][y-1]=="#"&&wuziqipan[x-2][y-2]=="#"&&wuziqipan[x-3][y-3]=="#"&&wuziqipan[x-4][y-4]=="#"&&wuziqipan[x][y]=="#"){
+                                    //gaming=0;
+                                    winner=2;
+                                }
+                                if (winner!=0)
+                                {
+                                    stringstream winnerits;
+                                    winnerits<<winner;
+                                    winnerits>>winners;
+                                    gamecofeelback=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/winner&id="+winners+"'",".PokeGamingChannel");
+                                    gaming=atoi(gamecofeelback.c_str());
+                                    wait="END";
+                                }
+                                y++;
+                            }
+                            cout <<"."<<endl;
+                            y=-1;
+                            x=x+1;
+                        }
+
                     }
                     else
                     {
-                        cout<<endl<<"\nWait..";
+                        cout<<"\nWaiting..";
+                        cout<<endl;
                         while(nowqizi!=qizi)
                         {
                             nowqizi=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/nowwho&x="+report_x+"&y="+report_y+"'",".PokeGamingChannel");
                             sleep(0.25);
                         }
+                        re=1;
                     }
+                    if (re==1)
+                    {
+                        cout <<endl;
+                        cout <<"\033[1;34mRefresh";
+                        nowqizi=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/nowwho&x="+report_x+"&y="+report_y+"'",".PokeGamingChannel");
+                        qiziUDx=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/panupdatex'",".PokeGamingChannel");
+                        qiziUDy=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/panupdatey'",".PokeGamingChannel");
+                        cout <<".";
+                        UDqiziX=atoi(qiziUDx.c_str());
+                        UDqiziY=atoi(qiziUDy.c_str());
+                        wuziqipan[UDqiziX][UDqiziY]=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/pan&x="+qiziUDx+"&y="+qiziUDy+"'",".PokeGamingChannel");
+                        cout <<".";
+                        x=1;
+                        y=1;
+                        while (x<=21&&winner==0)
+                        {
+                            cout<<".";
+                            while(y<=21&&winner==0) {
+                                //@
+                                if (wuziqipan[x][y]=="@"&&wuziqipan[x+1][y]=="@"&&wuziqipan[x+2][y]=="@"&&wuziqipan[x+3][y]=="@"&&wuziqipan[x+4][y]=="@"){
+                                    //gaming=0;
+                                    winner=1;
+                                }
+                                else if (wuziqipan[x][y]=="@"&&wuziqipan[x-1][y]=="@"&&wuziqipan[x-2][y]=="@"&&wuziqipan[x-3][y]=="@"&&wuziqipan[x-4][y]=="@"){
+                                    //gaming=0;
+                                    winner=1;
+                                }
+                                else if (wuziqipan[x][y+1]=="@"&&wuziqipan[x][y+2]=="@"&&wuziqipan[x][y+3]=="@"&&wuziqipan[x][y+4]=="@"&&wuziqipan[x][y]=="@"){
+                                    //gaming=0;
+                                    winner=1;
+                                }
+                                else if (wuziqipan[x][y-1]=="@"&&wuziqipan[x][y-2]=="@"&&wuziqipan[x][y-3]=="@"&&wuziqipan[x][y-4]=="@"&&wuziqipan[x][y]=="@"){
+                                    //gaming=0;
+                                    winner=1;
+                                }
+                                else if (wuziqipan[x+1][y+1]=="@"&&wuziqipan[x+2][y+2]=="@"&&wuziqipan[x+3][y+3]=="@"&&wuziqipan[x+4][y+4]=="@"&&wuziqipan[x][y]=="@"){
+                                    //gaming=0;
+                                    winner=1;
+                                }
+                                else if (wuziqipan[x-1][y-1]=="@"&&wuziqipan[x-2][y-2]=="@"&&wuziqipan[x-3][y-3]=="@"&&wuziqipan[x-4][y-4]=="@"&&wuziqipan[x][y]=="@"){
+                                    //gaming=0;
+                                    winner=1;
+                                }
+                                //#
+                                if (wuziqipan[x][y]=="#"&&wuziqipan[x+1][y]=="#"&&wuziqipan[x+2][y]=="#"&&wuziqipan[x+3][y]=="#"&&wuziqipan[x+4][y]=="#"){
+                                    //gaming=0;
+                                    winner=2;
+                                }
+                                else if (wuziqipan[x][y]=="#"&&wuziqipan[x-1][y]=="#"&&wuziqipan[x-2][y]=="#"&&wuziqipan[x-3][y]=="#"&&wuziqipan[x-4][y]=="#"){
+                                    //gaming=0;
+                                    winner=2;
+                                }
+                                else if (wuziqipan[x][y+1]=="#"&&wuziqipan[x][y+2]=="#"&&wuziqipan[x][y+3]=="#"&&wuziqipan[x][y+4]=="#"&&wuziqipan[x][y]=="#"){
+                                    //gaming=0;
+                                    winner=2;
+                                }
+                                else if (wuziqipan[x][y-1]=="#"&&wuziqipan[x][y-2]=="#"&&wuziqipan[x][y-3]=="#"&&wuziqipan[x][y-4]=="#"&&wuziqipan[x][y]=="#"){
+                                    //gaming=0;
+                                    winner=2;
+                                }
+                                else if (wuziqipan[x+1][y+1]=="#"&&wuziqipan[x+2][y+2]=="#"&&wuziqipan[x+3][y+3]=="#"&&wuziqipan[x+4][y+4]=="#"&&wuziqipan[x][y]=="#"){
+                                    //gaming=0;
+                                    winner=2;
+                                }
+                                else if (wuziqipan[x-1][y-1]=="#"&&wuziqipan[x-2][y-2]=="#"&&wuziqipan[x-3][y-3]=="#"&&wuziqipan[x-4][y-4]=="#"&&wuziqipan[x][y]=="#"){
+                                    //gaming=0;
+                                    winner=2;
+                                }
+                                if(winner!=0)
+                                {
+
+                                    stringstream winnerits;
+                                    winnerits<<winner;
+                                    winnerits>>winners;
+                                    cout<<"\nFound the winning or losing...\nWaiting\n"<<endl;
+                                    gamecofeelback="-1";
+                                    while(gamecofeelback=="-1")
+                                    {
+                                        gamecofeelback=curl("'/project/project.php?username="+u.username+"&password="+u.password+"&mode=games/wuziqi/gaming/winner&id="+winners+"'",".PokeGamingChannel");
+                                    }
+                                    if (gamecofeelback=="0")
+                                    {
+                                        cout<<"The win was admitted"<<endl;
+                                    }
+                                    else
+                                    {
+                                        cout<<"Unrecognized!"<<endl;
+                                    }
+                                    gaming=atoi(gamecofeelback.c_str());
+                                }
+                                y++;
+                            }
+                            y=-1;
+                            x=x+1;
+                        }
+                    }
+                }
+
+                if(winner==1)
+                {
+                    winners="@";
+                }
+                else if(winner==2)
+                {
+                    winners="#";
+                }
+                if (winners==qizi)
+                {
+                    clear();
+                    cout <<"\033[1;31mX 1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 \033[0m\033[1;34mY\033[0m\n";
+                    int showx=1;
+                    x=0;
+                    y=0;
+                    while (x<20)
+                    {
+                        cout<<"\033[0m  ";
+                        while(y<20) {
+                            if (wuziqipan[x][y]=="@")
+                            {
+                                cout<<"\033[1m"<<colourful_red<<"\033[1m  ";
+                            }
+                            else if(wuziqipan[x][y]=="#")
+                            {
+                                cout<<"\033[1m"<<colourful_blue<<"\033[1m  ";
+                            }
+                            else
+                            {
+                                cout<<"\033[1m"<<wuziqipan[x][y]<<"\033[1m  ";
+                            }
+                            y++;
+
+                        }
+                        y=0;
+                        x=x+1;
+                        cout<<"\033[1;34m"<<showx<<"\033[0m\n\033[1m";
+                        showx++;
+                    }
+                    cout<<"\nYou:";
+                    if (qizi=="@")
+                    {
+                        cout<<"\033[1m"<<colourful_red<<"\033[1m  ";
+                    }
+                    else if(qizi=="#")
+                    {
+                        cout<<"\033[1m"<<colourful_blue<<"\033[1m  ";
+                    }
+                    cout<<endl<<"You Win";
+                    cout<<"\033[31m\033[0m\n\033[33mKey Anything to continue(Letter..Number...\n\033[0m";
+                    string t;
+                    cin>>t;
+                }
+                else
+                {
+                    clear();
+                    cout <<"\033[1;31mX 1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 \033[0m\033[1;34mY\033[0m\n";
+                    int showx=1;
+                    x=0;
+                    y=0;
+                    while (x<20)
+                    {
+                        cout<<"\033[0m  ";
+                        while(y<20) {
+                            if (wuziqipan[x][y]=="@")
+                            {
+                                cout<<"\033[1m"<<colourful_red<<"\033[1m  ";
+                            }
+                            else if(wuziqipan[x][y]=="#")
+                            {
+                                cout<<"\033[1m"<<colourful_blue<<"\033[1m  ";
+                            }
+                            else
+                            {
+                                cout<<"\033[1m"<<wuziqipan[x][y]<<"\033[1m  ";
+                            }
+                            y++;
+
+                        }
+                        y=0;
+                        x=x+1;
+                        cout<<"\033[1;34m"<<showx<<"\033[0m\n\033[1m";
+                        showx++;
+                    }
+                    cout<<"\nYou:";
+                    if (qizi=="@")
+                    {
+                        cout<<"\033[1m"<<colourful_red<<"\033[1m  ";
+                    }
+                    else if(qizi=="#")
+                    {
+                        cout<<"\033[1m"<<colourful_blue<<"\033[1m  ";
+                    }
+                    cout<<endl<<"You Lost";
+                    cout<<"\033[31m\033[0m\n\033[33mKey Anything to continue(Letter..Number...\n\033[0m";
+                    string t;
+                    cin>>t;
                 }
             }
             quit=4;
@@ -381,7 +675,7 @@ int main()
             //while(quit==10)
             //{
             cout<<"\033[33mLoading\n\033[0m";
-            system("clear");
+            clear();
             string msg="\033[33mLoading\n\033[0m";
             while(quit==10)
             {
@@ -398,13 +692,13 @@ int main()
                 cout << "If You want to send message,Start a new program And In Logged Menu Choose 2)\n";
                 cout << "Press Ctrl+C to exit\n";
                 msg=curl("'/project/project.php?mode=chat&username="+u.username+"&password="+u.password+"'",".PokeLiveChatTmpFILE");
-                sleep(1);
-                system("clear");
+                sleep(0.1);
+                clear();
             }
         }
         if (quit==11)
         {
-            system("clear");
+            clear();
             string msg;
             while(quit==11)
             {
@@ -422,12 +716,12 @@ int main()
                     string feelback=curl("'/project/project.php?mode=chat/report&t="+msg+"&username="+u.username+"&password="+u.password+"'",".PokeChatSendMsgTMPFILE");
                     if (feelback=="OK")
                     {
-                        system("clear");
+                        clear();
                         cout << "\033[32mMessage Status:Sent\n\n\033[0m";
                     }
                     else
                     {
-                        system("clear");
+                        clear();
                         cout << "\n\033[31mError*Message Sending Failure\n\033[0m";
                     }
                 }

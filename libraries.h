@@ -56,6 +56,14 @@ string str_replacve(string dstPattern,string pattern,string str,int count=-1)
     retStr += str.substr(i);
     return retStr;
 }
+void clear(bool hightlight=true)
+{
+    system("clear");
+    if (hightlight==true)
+    {
+        cout<<"\033[1m";
+    }
+}
 int kbhit(void)
 {
     struct termios oldt, newt;
@@ -165,7 +173,7 @@ public:
             //mkdir(fd,755);
             //system("curl -o .PokeNetTmp ")
             //f=read(".PokeNetTmp");
-            //system("clear");
+            //clear();
             //write("accounts/"+name+"/password",pwd);
             username=name;
             password=pwd;
