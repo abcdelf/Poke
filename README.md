@@ -1,6 +1,4 @@
 # Poke
-# 1v1五子棋
-# 聊天室
 
 # -编译<br>
   ~$ g++ main.cpp -o Poke <br>
@@ -32,5 +30,5 @@
 #include <sys/socket.h><br>
 
 
-#网络功能<br>
+# 网络功能<br>
   17.11.11-废除系统命令"wget"-更新为Linux Socket连接<br>
