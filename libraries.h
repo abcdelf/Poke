@@ -2,6 +2,8 @@
 #include <sstream>
 #include <fstream>
 
+#include <thread>
+
 #include <cassert>
 #include <cstdio>
 
@@ -14,7 +16,9 @@
 #include <dirent.h>
 #include <unistd.h>
 #include <pthread.h>
+
 #include <netdb.h>
+#include <time.h>
 
 #include <fcntl.h>
 
@@ -30,17 +34,18 @@
 #include <sys/socket.h>
 
 #include "httpsocket.h"
-using namespace std;
-string str_replacve(string dstPattern,string pattern,string str,int count=-1)
+
+namespace tools {
+std::string str_replacve(std::string dstPattern,std::string pattern,std::string str,int count=-1)
 {
-    string retStr="";
-    string::size_type pos;
+    std::string retStr="";
+    std::string::size_type pos;
     int i=0,l_count=0,szStr=str.length();
     if(-1 == count) // replace all
         count = szStr;
     for(i=0; i<szStr; i++)
     {
-        if(string::npos == (pos=str.find(pattern,i)))  break;
+        if(std::string::npos == (pos=str.find(pattern,i)))  break;
         if((int)pos < szStr)
         {
             retStr += str.substr(i,pos-i) + dstPattern;
@@ -60,9 +65,10 @@ void clear(bool hightlight=true)
     system("clear");
     if (hightlight==true)
     {
-        cout<<"\033[1m";
+        std::cout<<"\033[1m";
     }
 }
+
 int kbhit(void)
 {
     struct termios oldt, newt;
@@ -89,36 +95,60 @@ extern void clear_screen(int r)
     int f=0;
     while (f<r)
     {
-        cout <<endl;
+        std::cout <<std::endl;
         f++;
     }
     //if (m==1)
     //{
-    //   cout << "\033[31;1mDon't Input Anything Except Number!!!\033[0m\n";
+    //   std::cout << "\033[31;1mDon't Input Anything Except Number!!!\033[0m\n";
     //}
 }
-extern string read(string filename)
+extern std::string read(std::string filename)
 {
     const char*f = filename.c_str();
-    string data;
-    ifstream read;
+    std::string data;
+    std::ifstream read;
     read.open(f);
-    read >> data;
-    read.close();
-    return data;
+    std::stringstream buffer;
+    buffer << read.rdbuf();
+    std::string contents(buffer.str());
+    return contents;
 }
-extern bool write(string filename,string word)
+extern bool write(std::string filename,std::string word,int mode=1)
 {
     const char*f = filename.c_str();
-    ofstream write;
-    write.open(f);
+    std::ofstream write;
+    if (mode==1)
+    {
+        write.open(f);
+    }
+    else if (mode==2)
+    {
+        write.open(f,std::ios::app);
+    }
     write << word;
     write.close();
     return  true;
 }
-extern string curl(string url,string tmp = ".PokeNetTmp")
+
+extern std::string curl(std::string url,std::string tmp = ".PokeNetTmp",int mode=1)
 {
-    url="http://v.starfiles.tk:88"+url;
+    std::srand((unsigned)time( NULL ) );
+    int randnum=rand();
+    std::stringstream ss;
+    ss<<randnum;
+    std::string rands;
+    ss>>rands;
+    tmp=rands+tmp;
+    tmp=".PokeData/"+tmp;
+    if (mode==1)
+    {
+        url="http://v.starfiles.tk:88/project/project.php?"+url;
+    }
+    else if (mode==2)
+    {
+        url="http://v.starfiles.tk:88/"+url;
+    }
     FILE *fp;
     if(!(fp = fopen(tmp.c_str(),"wb+")))
     {
@@ -138,7 +168,7 @@ extern string curl(string url,string tmp = ".PokeNetTmp")
     int flag = head.find("Content-Length:",0);
     int endFlag = head.find("\r\n",flag);
     std::string subStr = head.substr(flag,endFlag-flag);
-    sscanf(subStr.c_str(),"Content-Length: %d",&lens);
+    std::sscanf(subStr.c_str(),"Content-Length: %d",&lens);
     fseek(fp,0,0);
     while(cnt < lens)
     {
@@ -149,27 +179,89 @@ extern string curl(string url,string tmp = ".PokeNetTmp")
     }
     fclose(fp);
     //url="wget -o .PokeNetLogs -O "+tmp+" http://v.starfiles.tk:88/"+url;
-    //string rm;
+    //std::string rm;
     //rm="rm -rf "+tmp;
     //const char*u = url.c_str();
     //system(u);
-    string data=read(tmp);
+    std::string data=tools::read(tmp);
     //system(r);
     return data;
+}
+}
+namespace player {
+extern int player(){
+    std::string co;
+    for (;;)
+    {
+        co="";
+        std::cin>>co;
+        if (co=="p")
+        {
+            tools::write(".PokePlayer","Pause");
+        }
+        else if (co=="n")
+        {
+            tools::write(".PokePlayer","");
+        }
+    }
+    exit(0);
+}
+}
+namespace game_wuziqi {
+//extern int input(std::string username,std::string password) {
+
+//}
+}
+namespace chat {
+int sendmsg(std::string username,std::string password) {
+    // std::string msg="";
+    std::string msg;
+    for(;;)
+    {
+        msg="";
+        std::cin>>msg;
+        if (msg=="/s") {
+            tools::curl("mode=chat/report&t="+tools::read(".message_buf")+"&username="+username+"&password="+password+"",".PokeChatSendMsgTMPFILE");
+            tools::write(".message_buf","");
+        }
+        else if (msg=="/c")
+        {
+            tools::write(".message_buf","");
+        }
+        else if (msg=="/q")
+        {
+            tools::write(".message_buf","#[#(#%$q+u+i+t$%#)#]#");
+            return 0;
+        }
+        else
+        {
+            tools::write(".message_buf",msg,2);
+        }
+    }
+}
+}
+namespace user {
+void keep_heartbeat(std::string username,std::string password) {
+    for(;;)
+    {
+        tools::curl("mode=heartbeat&username="+username+"&password="+password+"",".PokeRegTmpFile");
+        sleep(10);
+    }
+    return;
 }
 class user
 {
 public:
-    //user(string name,string pwd):username(name),password(pwd){}
-    string username="";
-    string password;
-    bool login(string name,string pwd)
+    //user(std::string name,std::string pwd):username(name),password(pwd){}
+    std::string username="";
+    std::string password;
+    bool login(std::string name,std::string pwd)
     {
-        //string realpwd=read("accounts/"+name+"/password");
-        string feelback=curl("/project/project.php?mode=login&username="+name+"&password="+pwd+"",".PokeLoginTmpFile");
+        //std::string realpwd=tools::read("accounts/"+name+"/password");
+        std::string feelback=tools::curl("mode=login&username="+name+"&password="+pwd+"",".PokeLoginTmpFile");
         if (feelback=="似乎有什么不对劲")
         {
-            cout << "\033[31mHave no this User\033[0m";
+            std::cout << "\033[31mHave no this User\033[0m";
             return false;
         }
         else
@@ -178,33 +270,37 @@ public:
             {
                 username=name;
                 password=pwd;
+                std::thread heartbeat(keep_heartbeat,this->username,this->password);
+                heartbeat.detach();
                 return true;
             }
             else
             {
-                cout<< "\033[31mWrong Password\033[0m";
+                std::cout<< "\033[31mWrong Password\033[0m";
                 return false;
             }
         }
     }
-    bool reg(string name,string pwd)
+    bool reg(std::string name,std::string pwd)
     {
         //const char*n = name.c_str();
-        //string checkuser=read("accounts/"+name+"/password");
-        string feelback=curl("/project/project.php?mode=reg&username="+name+"&password="+pwd+"",".PokeRegTmpFile");
+        //std::string checkuser=read("accounts/"+name+"/password");
+        std::string feelback=tools::curl("mode=reg&username="+name+"&password="+pwd+"",".PokeRegTmpFile");
         if (feelback=="OK")
         {
-            string f;
+            std::string f;
             //f="accounts/"+name;
             //const char*fd = f.c_str();
             //mkdir("accounts",755);
             //mkdir(fd,755);
-            //system("curl -o .PokeNetTmp ")
+            //system("tools::curl -o .PokeNetTmp ")
             //f=read(".PokeNetTmp");
             //clear();
-            //write("accounts/"+name+"/password",pwd);
+            //tools::write("accounts/"+name+"/password",pwd);
             username=name;
             password=pwd;
+            std::thread heartbeat(keep_heartbeat,this->username,this->password);
+            heartbeat.detach();
             return true;
         }
         else
@@ -212,4 +308,7 @@ public:
             return false;
         }
     }
+
 };
+}
+
