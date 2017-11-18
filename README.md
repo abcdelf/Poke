@@ -1,10 +1,7 @@
 # Poke
 
 # -编译<br>
-  ~$ g++ main.cpp -o Poke <br>
-  Or<br>
-  ~$ gcc main.cpp -o Poke <br>
-  ...
+  ~$ g++ main.cpp httpsocket.cpp -o Poke <br>
 # c++头文件<br>
 #include <iostream><br>
 #include <sstream><br>
