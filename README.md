@@ -2,6 +2,8 @@
 
 # -编译<br>
   ~$ g++ main.cpp httpsocket.cpp -o Poke <br>
+  (if you use up failed, please try this command: g++ main.cpp httpsocket.cpp -o Poke -std=c++11 -lpthread)
+  
 # c++头文件<br>
 #include <iostream><br>
 #include <sstream><br>
